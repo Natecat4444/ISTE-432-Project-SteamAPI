@@ -44,6 +44,9 @@ Timeline
 
 ```java
 
+// Jar File is the classpath
+//
+//
 import java.net.*;
 import java.io.*;  // Import the File class
 import java.io.FileNotFoundException;
@@ -57,50 +60,35 @@ import org.json.simple.parser.ParseException;
 public class CreateFile {
   public static void main(String[] args) throws Exception{
     
-      File myObj = new File("gamelist.json");
-      FileWriter myWriter = new FileWriter(myObj);
-      if (myObj.createNewFile()) {
-        System.out.println("File created: " + myObj.getName());
-        System.out.println("Writing to "+ myObj.getName());
-      } else {
-        System.out.println("File already exists.");
-        System.out.println("Overwrite to "+ myObj.getName());
-      }
-    
     
     URL url = new URL("http://api.steampowered.com/ISteamApps/GetAppList/v2");
         BufferedReader read = new BufferedReader(
         new InputStreamReader(url.openStream()));
         String i;
+        String json = "";
          while ((i = read.readLine()) != null){
-             myWriter.write(i);
+             json = json + i;
              }
-      myWriter.close();
       
-      readJson();
+      readJson(json);
       
   }
   
-  public static void readJson(){
+  public static void readJson(String jsonObj){
   
       JSONParser jsonParser = new JSONParser();
          
         try 
         {
             //Read JSON file
-            JSONObject obj = (JSONObject) jsonParser.parse(new FileReader("gamelist.json"));
+            JSONObject obj = (JSONObject) jsonParser.parse(jsonObj);
             JSONObject app = (JSONObject) obj.get("applist");
             JSONArray appList = (JSONArray) app.get("apps");
              
             //Iterate over app array
             appList.forEach( apps -> parseAppObject( (JSONObject) apps ) );
-            
            
  
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
