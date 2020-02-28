@@ -10,7 +10,7 @@ public class dbLayer{
    private final String PASS = "student";
 
    private Connection conn = null;
-   
+// gets called by a method in the APILayer file   
    public boolean connect(){
       try{
          Class.forName(DRIVER);
@@ -20,6 +20,7 @@ public class dbLayer{
       
       }//end trycatch
       return true;
+      // returns true if the connection to the login database is succesful
    }//end connect
    public boolean close(){
       try{
@@ -28,6 +29,7 @@ public class dbLayer{
          e.printStackTrace();
       }//end trycatch
       return true;
+      // returns false if the closing of the conn to the login database is successful
    }//end close
 
 }//end dbLayer
