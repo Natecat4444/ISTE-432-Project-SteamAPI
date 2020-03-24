@@ -13,7 +13,7 @@ Business Rules
 	Users need to log in in order to utilise favorites and modify preferences.
 Technology Used
 	Java
-	Restful API Client
+	Steam Web API
 	MySQL
 Design Patterns
 	We will be using MVC as the design pattern for our app. MVC is the best available option because it allows for repetitive calls of different data in the same framework. For example, if a user wants to make different searches for different games, MVC will keep the process of making that search the same each time, despite the user wanting different results.
