@@ -17,6 +17,7 @@ public class APILayer extends JFrame {
    
       
       JPanel centerPanel = new JPanel();
+      
       JButton keySearch = new JButton("AppID Search");
       JButton valueSearch = new JButton("Name Search");
       
@@ -100,11 +101,11 @@ public class APILayer extends JFrame {
      
       add(centerPanel, BorderLayout.CENTER);
      
-      setSize(400,60);
+      setSize(400,100);
       setLocationRelativeTo(null);
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       setVisible(true);
-         
+        
          
       String json = "";
       try 
