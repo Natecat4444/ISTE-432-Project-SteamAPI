@@ -17,7 +17,6 @@ public class APILayer extends JFrame {
    
       
       JPanel centerPanel = new JPanel();
-      
       JButton keySearch = new JButton("AppID Search");
       JButton valueSearch = new JButton("Name Search");
       
@@ -32,7 +31,7 @@ public class APILayer extends JFrame {
       keySearch.addActionListener(
          new ActionListener(){
             public void actionPerformed(ActionEvent ae){
-              
+               //Presentation UI Creation
                JPanel messagePanel = new JPanel();
                JTextField keyword = new JTextField(10);
                JLabel title = new JLabel("AppID:");
@@ -40,7 +39,7 @@ public class APILayer extends JFrame {
                messagePanel.add(title);
                messagePanel.add(keyword);
                JOptionPane.showMessageDialog(null,messagePanel); 
-                
+               //Business code interaction
                try{
                   Long key = Long. parseLong(keyword.getText());
                   String value = hmap.get(key);  
@@ -72,23 +71,33 @@ public class APILayer extends JFrame {
                try{
                   String value = keyword.getText();
                   Long key = 0L;
-                  Hashtable table = new Hashtable();
-                  
+                  ArrayList<String> searchList = new ArrayList<String>();
+                                       
                   for(Map.Entry entry: hmap.entrySet()){
-                     if(value.equals(entry.getValue())){
-                        Object oj = entry.getKey();
-                        key = Long. parseLong(oj.toString());
+                        boolean isFound = false;
+                        String word = entry.toString();
+                        isFound = word.contains(value);
                         
-                        break; 
-                     }
+                        if (isFound == true){
+                        Object oj = entry.getKey();
+                        int inde = word.indexOf(value);
+                        String name = word.substring(inde);
+                        key = Long. parseLong(oj.toString());
+                          searchList.add("AppID: "+key+" Name: "+name); 
+                        }
+                        
+                         
+                     
                   }
+                  
                   if(key == 0L){
-                     System.out.println("Value: '"+value+"' not found!");
+                     System.out.println("No game is match!");
                   }else{
-                  System.out.println("AppID: "+key+" Name: "+value);
+                     for(String game: searchList){
+                        System.out.println(game);
+                     }
+                     System.out.println("\n"+searchList.size()+" games are searched.");
                   }
-                  //long key = hmap.get(value);  
-                  //System.out.println("AppID: "+key);
                 
                }catch(NumberFormatException nfe){
                   System.out.println("Please enter AppID!");
@@ -98,15 +107,15 @@ public class APILayer extends JFrame {
                }
             }
          });
-     
+      //Presentation UI Creation
       add(centerPanel, BorderLayout.CENTER);
      
-      setSize(400,100);
+      pack();
       setLocationRelativeTo(null);
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       setVisible(true);
-        
          
+      //Application API interaction  
       String json = "";
       try 
       {
