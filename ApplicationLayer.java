@@ -11,7 +11,10 @@ public class ApplicationLayer{
    HashMap<Long, String> hmap = new HashMap<Long, String>();
    
    public ApplicationLayer(){
+   }
    
+   
+   public HashMap<Long, String> run(){
        String json = "";
       try 
       {
@@ -32,6 +35,8 @@ public class ApplicationLayer{
          readJson(json);
       }
       System.out.println("Compeleted!\n");
+      
+      return hmap;
    }
    
    void readJson(String jsonObj){
