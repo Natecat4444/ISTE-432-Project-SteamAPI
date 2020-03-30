@@ -340,3 +340,88 @@ public class APILayer extends JFrame {
 }
 ```
 
+Exception Handling:
+
+
+```java
+try{
+                   Long key = Long. parseLong(keyword.getText());
+                   String value = hmap.get(key); 
+               
+                   if(!value.equals(null)){  
+                      System.out.println("AppID: "+key+" Name: "+value);
+                   }
+                }catch(NumberFormatException nfe){
+                   System.out.println("Please enter AppID!");
+                }catch(NullPointerException ne){
+               
+                   System.out.println("AppID invalid");
+                }
+
+   try{
+                   if(!keyword.getText().equals("")){
+                      String value = keyword.getText();
+                      Long key = 0L;
+                      Long mainKey = 0L;
+                      String mainName = "";
+                      ArrayList<String> searchList = new ArrayList<String>();
+                      System.out.println("");                    
+                      for(Map.Entry entry: hmap.entrySet()){
+                         boolean isFound = false;
+                         String word = entry.toString();
+                         isFound = word.contains(value);
+                        
+                         if (isFound == true){
+                            Object oj = entry.getKey();
+                            int inde = word.indexOf("=");
+                            String name = word.substring(inde+1);
+                            key = Long. parseLong(oj.toString());
+                            searchList.add("AppID: "+key+" Name: "+name);
+                            if(value.equals(entry.getValue())){
+                               mainName = name;
+                               mainKey = Long. parseLong(oj.toString());
+                              
+                            }  
+                         }
+                      }
+                  
+                      if(key == 0L){
+                         System.out.println("No game are matched!");
+                      }
+                      else{
+                         for(String game: searchList){
+                            System.out.println(game);
+                         }
+                         System.out.println("\n"+searchList.size()+" games are searched.");
+                     
+                         if(mainKey != 0L){
+                            System.out.println("\nOne game is exactly matched: AppID: "+mainKey+" Name: "+mainName);
+                         }else if(mainKey == 0L){
+                            System.out.println("\nNo game are exactly matched!");
+                         }else{
+                            System.out.println("No game are matched!");
+                         }
+                      }
+                   }else{
+                      System.out.println("Please enter the Name!");
+                   }
+                }catch(NumberFormatException nfe){
+                   System.out.println("Please enter the AppID!");
+                }catch(NullPointerException ne){
+               
+                   System.out.println("AppID invalid");
+                }
+
+```
+
+The majority of exceptions will occur from one of two sources: user input, or data returned from the API. Exceptions occurring from user input will not occur in the presentation layer. This is due to the fact that the data itself is automatically passed from the presentation layer to the business layer, where it is then checked. Additionally, errors should not be presented to the user, only information, such as “Your search returned no results”. This keeps back-end information being passed to the user at a minimum, and also creates a good point of consolidation for exception handling.
+
+Exceptions occurring from the API will also be passed to the business layer, as it is where information is always passed to before being sent to the user in the presentation layer. The main example of this kind of exception is when a game has no items in its news feed. In this case, the exception will be caught in the application layer where it happens, and passed to the business layer. Afterwards, the info will be passed to the presentation layer, where the user will see it.
+
+There are a few other exceptions that can occur that do not fall under these two main categories. An incorrect username/password will be caught in the data layer, and passed to the business layer, where the info will then be sent to the user in the presentation layer. There is also a possibility of the Steam API being down. This will be automatically caught when the application first attempts to retrieve the full list of games, in which case the info can be sent from the application layer to the presentation layer after passing through the business layer. The last category is if the database goes down. If the user attempts to log-in, this will be caught automatically, and info sent to both the user and the DBA, so that it can be fixed ASAP. If the database is down, the user can still use the application while logged out, but the favorites feature will not be available to them.
+
+
+
+
+
+
