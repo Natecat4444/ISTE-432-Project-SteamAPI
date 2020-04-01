@@ -132,20 +132,7 @@ public class BusinessLayer extends JFrame {
       setVisible(true);
          
       //Application API interaction  
-      String json = "";
-      try 
-      {
-         URL url = new URL("http://api.steampowered.com/ISteamApps/GetAppList/v2");
-         BufferedReader read = new BufferedReader(
-            new InputStreamReader(url.openStream()));
-         String i;
-         while ((i = read.readLine()) != null){
-            json += i;
-         }
-               
-      }catch(Exception e){
-         System.out.println("Error with reading JSON");
-      }          
+         
       hmap = al.run();
       while((hmap == null)==true){
          al.run();
