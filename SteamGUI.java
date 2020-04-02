@@ -4,6 +4,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.event.EventHandler;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Hbox;
+import javafx.scene.layout.Vbox;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Label;
+
 
 public class SteamGUI extends Application{
    static Stage primaryStage;
