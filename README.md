@@ -421,7 +421,181 @@ Exceptions occurring from the API will also be passed to the business layer, as 
 There are a few other exceptions that can occur that do not fall under these two main categories. An incorrect username/password will be caught in the data layer, and passed to the business layer, where the info will then be sent to the user in the presentation layer. There is also a possibility of the Steam API being down. This will be automatically caught when the application first attempts to retrieve the full list of games, in which case the info can be sent from the application layer to the presentation layer after passing through the business layer. The last category is if the database goes down. If the user attempts to log-in, this will be caught automatically, and info sent to both the user and the DBA, so that it can be fixed ASAP. If the database is down, the user can still use the application while logged out, but the favorites feature will not be available to them.
 
 
+Milestone 5: Refactoring:
 
+The main way we’re improving performance is by saving the list of steam games client-side when the user loads up the application. When the application first begins, an API call is made to the Steam servers that fetches every software on Steam, and saves the results locally. The reason for this is that the only way to search the Steam API for games is to get a list of every single piece of software on the service. Thus, instead of getting a list of every game through the API any time the user wants to make a search, the list can instead be saved client-side, minimizing the number of API calls that need to be made. This code is located on lines 17-40 in the Application Layer, and is called in lines 19-23 in the Business Layer.
+
+The main set of refactoring we did was in the Business Layer. When we first made the layer, all the code was created inside of the constructor, as it was just used to separate it into the layer at the start. Now that we’re involving the Presentation Layer, however, we moved the code out into separate methods, so they are more easily run by the other layers. This code can be found below line 28 in the Business Layer, with the original code commented out.
+
+```java
+
+import java.util.*;
+// import javax.swing.*;
+// import java.awt.*;
+// import java.awt.event.*;
+import java.net.*;
+import java.io.*;  // Import the File class
+import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONArray;
+import org. json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+
+public class BusinessLayer{
+
+   HashMap<Long, String> hmap = new HashMap<Long,String>();
+   
+   
+   public BusinessLayer(){
+   
+   ApplicationLayer al = new ApplicationLayer();
+      hmap = al.run();
+      while((hmap == null)==true){
+         al.run();
+      } 
+   
+   
+   }
+      
+     //  JPanel centerPanel = new JPanel();
+//       JButton keySearch = new JButton("AppID Search");
+//       JButton valueSearch = new JButton("Name Search");
+//       
+//       
+//       keySearch.setEnabled(false);
+//       valueSearch.setEnabled(false);
+//       setLayout(new BorderLayout());
+//      
+//       centerPanel.add(keySearch);
+//       centerPanel.add(valueSearch);
+//      
+//       keySearch.addActionListener(
+//          new ActionListener(){
+//             public void actionPerformed(ActionEvent ae){
+//                //Presentation UI Creation
+//                JPanel messagePanel = new JPanel();
+//                JTextField keyword = new JTextField(10);
+//                JLabel title = new JLabel("AppID:");
+//             
+//                messagePanel.add(title);
+//                messagePanel.add(keyword);
+//                JOptionPane.showMessageDialog(null,messagePanel); 
+               //Business code interaction
+               
+         public String searchFromKey(String keyString){
+         
+               try{
+                  Long key = Long. parseLong(keyString);
+                  String value = hmap.get(key);  
+               
+                  if(!value.equals(null)){   
+                     return ("AppID: "+key+" Name: "+value);
+                  }
+               }catch(NumberFormatException nfe){
+                  return ("Please enter AppID!");
+               }catch(NullPointerException ne){
+                  return ("AppID invalid");
+               }
+                  return ("AppID invalid");    
+            }
+         // });
+         
+      // valueSearch.addActionListener(
+//          new ActionListener(){
+//             public void actionPerformed(ActionEvent ae){
+//                JPanel messagePanel = new JPanel();
+//                JTextField keyword = new JTextField(10);
+//                JLabel title = new JLabel("Name:");
+//             
+//                messagePanel.add(title);
+//                messagePanel.add(keyword);
+//                JOptionPane.showMessageDialog(null,messagePanel); 
+//                 
+
+         public ArrayList<String> searchFromValue(String valueString){
+         
+         ArrayList<String> searchList = new ArrayList<String>();
+               try{
+                  if(!valueString.equals("")){
+                     String value = valueString;
+                     Long key = 0L;
+                     Long mainKey = 0L;
+                     String mainName = "";
+                     
+                     System.out.println("");                     
+                     for(Map.Entry entry: hmap.entrySet()){
+                        boolean isFound = false;
+                        String word = entry.toString();
+                        isFound = word.contains(value);
+                        
+                        if (isFound == true){
+                           Object oj = entry.getKey();
+                           int inde = word.indexOf("=");
+                           String name = word.substring(inde+1);
+                           key = Long. parseLong(oj.toString());
+                           searchList.add("AppID: "+key+" Name: "+name);
+                           if(value.equals(entry.getValue())){
+                              mainName = name;
+                              mainKey = Long. parseLong(oj.toString());
+                              
+                           }   
+                        }
+                     }
+                  
+                     if(key == 0L){
+                        searchList.add("No game are matched!");
+                     }
+                     else{
+                        for(String game: searchList){
+                           System.out.println(game);
+                        }
+                        searchList.add("\n"+searchList.size()+" games are searched.");
+                     
+                        if(mainKey != 0L){
+                           searchList.add("\nOne game is exactly matched: AppID: "+mainKey+" Name: "+mainName);
+                        }else if(mainKey == 0L){
+                           searchList.add("\nNo game are exactly matched!");
+                        }else{
+                           searchList.add("No game are matched!");
+                        }
+                     }
+                  }else{
+                     searchList.add("Please enter the Name!");
+                  }
+               }catch(NumberFormatException nfe){
+                  searchList.add("Please enter the AppID!");
+               }catch(NullPointerException ne){
+               
+                  searchList.add("AppID invalid");
+               }
+               
+               return searchList;
+            }
+         // });
+      //Presentation UI Creation
+      // add(centerPanel, BorderLayout.CENTER);
+//      
+//       pack();
+//       setLocationRelativeTo(null);
+//       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//       setVisible(true);
+         
+      //Application API interaction  
+         
+      
+      // keySearch.setEnabled(true);
+//       valueSearch.setEnabled(true);
+  // }
+   
+   
+    
+   public static void main(String[] args) throws Exception{
+   
+      
+      new BusinessLayer();
+   }
+}
+
+```
 
 
 

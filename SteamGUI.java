@@ -19,6 +19,7 @@ public class SteamGUI extends Application{
    private static String Username = "";
    private static String Password = "";
    private static BorderPane prime;
+   private static BuisnessLayer BL;
    
    private void setUsername(String Username){
       this.Username = Username;
@@ -78,6 +79,7 @@ public class SteamGUI extends Application{
    }
    
    public void start(Stage primaryStage){
+      BL = new BuisnessLayer();
       this.primaryStage = primaryStage;
       prime = new BorderPane();
       prime.setCenter(loginWindow());
@@ -91,5 +93,9 @@ public class SteamGUI extends Application{
    
    public void setUpMainGuest(){
    
+   }
+   
+   public static void main(String[] args){
+      Application.launch();
    }
 }
