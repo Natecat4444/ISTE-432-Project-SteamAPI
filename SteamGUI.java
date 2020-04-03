@@ -55,8 +55,8 @@ public class SteamGUI extends Application{
                   setUpMain();
                 }
                 else{
-                  //TODO
-                  //Pop up for bad login, try again
+                  Label errortext = new Label("Incorrect Username/Password");
+                  prime.setTop(errortext);
                 }
             }
         });
