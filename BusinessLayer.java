@@ -1,7 +1,7 @@
 import java.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+// import javax.swing.*;
+// import java.awt.*;
+// import java.awt.event.*;
 import java.net.*;
 import java.io.*;  // Import the File class
 import org.json.simple.parser.JSONParser;
@@ -9,72 +9,87 @@ import org.json.simple.JSONArray;
 import org. json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-public class BusinessLayer extends JFrame {
+public class BusinessLayer{
 
-   HashMap<Long, String> hmap = new HashMap<Long, String>();
-   ApplicationLayer al = new ApplicationLayer();
+   HashMap<Long, String> hmap = new HashMap<Long,String>();
+   
+   
    public BusinessLayer(){
    
+   ApplicationLayer al = new ApplicationLayer();
+      hmap = al.run();
+      while((hmap == null)==true){
+         al.run();
+      } 
+   
+   
+   }
       
-      JPanel centerPanel = new JPanel();
-      JButton keySearch = new JButton("AppID Search");
-      JButton valueSearch = new JButton("Name Search");
-      
-      
-      keySearch.setEnabled(false);
-      valueSearch.setEnabled(false);
-      setLayout(new BorderLayout());
-     
-      centerPanel.add(keySearch);
-      centerPanel.add(valueSearch);
-     
-      keySearch.addActionListener(
-         new ActionListener(){
-            public void actionPerformed(ActionEvent ae){
-               //Presentation UI Creation
-               JPanel messagePanel = new JPanel();
-               JTextField keyword = new JTextField(10);
-               JLabel title = new JLabel("AppID:");
-            
-               messagePanel.add(title);
-               messagePanel.add(keyword);
-               JOptionPane.showMessageDialog(null,messagePanel); 
+     //  JPanel centerPanel = new JPanel();
+//       JButton keySearch = new JButton("AppID Search");
+//       JButton valueSearch = new JButton("Name Search");
+//       
+//       
+//       keySearch.setEnabled(false);
+//       valueSearch.setEnabled(false);
+//       setLayout(new BorderLayout());
+//      
+//       centerPanel.add(keySearch);
+//       centerPanel.add(valueSearch);
+//      
+//       keySearch.addActionListener(
+//          new ActionListener(){
+//             public void actionPerformed(ActionEvent ae){
+//                //Presentation UI Creation
+//                JPanel messagePanel = new JPanel();
+//                JTextField keyword = new JTextField(10);
+//                JLabel title = new JLabel("AppID:");
+//             
+//                messagePanel.add(title);
+//                messagePanel.add(keyword);
+//                JOptionPane.showMessageDialog(null,messagePanel); 
                //Business code interaction
+               
+         public String searchFromKey(String keyString){
+         
                try{
-                  Long key = Long. parseLong(keyword.getText());
+                  Long key = Long. parseLong(keyString);
                   String value = hmap.get(key);  
                
                   if(!value.equals(null)){   
-                     System.out.println("AppID: "+key+" Name: "+value);
+                     return ("AppID: "+key+" Name: "+value);
                   }
                }catch(NumberFormatException nfe){
-                  System.out.println("Please enter AppID!");
+                  return ("Please enter AppID!");
                }catch(NullPointerException ne){
-               
-                  System.out.println("AppID invalid");
+                  return ("AppID invalid");
                }
-                      
+                  return ("AppID invalid");    
             }
-         });
+         // });
          
-      valueSearch.addActionListener(
-         new ActionListener(){
-            public void actionPerformed(ActionEvent ae){
-               JPanel messagePanel = new JPanel();
-               JTextField keyword = new JTextField(10);
-               JLabel title = new JLabel("Name:");
-            
-               messagePanel.add(title);
-               messagePanel.add(keyword);
-               JOptionPane.showMessageDialog(null,messagePanel); 
-                
+      // valueSearch.addActionListener(
+//          new ActionListener(){
+//             public void actionPerformed(ActionEvent ae){
+//                JPanel messagePanel = new JPanel();
+//                JTextField keyword = new JTextField(10);
+//                JLabel title = new JLabel("Name:");
+//             
+//                messagePanel.add(title);
+//                messagePanel.add(keyword);
+//                JOptionPane.showMessageDialog(null,messagePanel); 
+//                 
+
+         public ArrayList<String> searchFromValue(String valueString){
+         
+         ArrayList<String> searchList = new ArrayList<String>();
                try{
-                  if(!keyword.getText().equals("")){
-                     String value = keyword.getText();
+                  if(!valueString.equals("")){
+                     String value = valueString;
                      Long key = 0L;
                      Long mainKey = 0L;
                      String mainName = "";
-                     ArrayList<String> searchList = new ArrayList<String>();
+                     
                      System.out.println("");                     
                      for(Map.Entry entry: hmap.entrySet()){
                         boolean isFound = false;
@@ -96,55 +111,55 @@ public class BusinessLayer extends JFrame {
                      }
                   
                      if(key == 0L){
-                        System.out.println("No game are matched!");
+                        searchList.add("No game are matched!");
                      }
                      else{
                         for(String game: searchList){
                            System.out.println(game);
                         }
-                        System.out.println("\n"+searchList.size()+" games are searched.");
+                        searchList.add("\n"+searchList.size()+" games are searched.");
                      
                         if(mainKey != 0L){
-                           System.out.println("\nOne game is exactly matched: AppID: "+mainKey+" Name: "+mainName);
+                           searchList.add("\nOne game is exactly matched: AppID: "+mainKey+" Name: "+mainName);
                         }else if(mainKey == 0L){
-                           System.out.println("\nNo game are exactly matched!");
+                           searchList.add("\nNo game are exactly matched!");
                         }else{
-                           System.out.println("No game are matched!");
+                           searchList.add("No game are matched!");
                         }
                      }
                   }else{
-                     System.out.println("Please enter the Name!");
+                     searchList.add("Please enter the Name!");
                   }
                }catch(NumberFormatException nfe){
-                  System.out.println("Please enter the AppID!");
+                  searchList.add("Please enter the AppID!");
                }catch(NullPointerException ne){
                
-                  System.out.println("AppID invalid");
+                  searchList.add("AppID invalid");
                }
+               
+               return searchList;
             }
-         });
+         // });
       //Presentation UI Creation
-      add(centerPanel, BorderLayout.CENTER);
-     
-      pack();
-      setLocationRelativeTo(null);
-      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      setVisible(true);
+      // add(centerPanel, BorderLayout.CENTER);
+//      
+//       pack();
+//       setLocationRelativeTo(null);
+//       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//       setVisible(true);
          
       //Application API interaction  
          
-      hmap = al.run();
-      while((hmap == null)==true){
-         al.run();
-      }
-      keySearch.setEnabled(true);
-      valueSearch.setEnabled(true);
-   }
+      
+      // keySearch.setEnabled(true);
+//       valueSearch.setEnabled(true);
+  // }
    
    
     
    public static void main(String[] args) throws Exception{
-    
-      new BusinessLayer(); 
+   
+      
+      new BusinessLayer();
    }
 }
