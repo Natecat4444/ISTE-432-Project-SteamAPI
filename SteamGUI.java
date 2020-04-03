@@ -11,12 +11,14 @@ import javafx.scene.layout.Vbox;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 
 
 public class SteamGUI extends Application{
    static Stage primaryStage;
    private static String Username = "";
    private static String Password = "";
+   private static BorderPane prime;
    
    private void setUsername(String Username){
       this.Username = Username;
@@ -49,8 +51,8 @@ public class SteamGUI extends Application{
             public void handle(MouseEvent event) {
                 setUsername(UserIn.getText());
                 setPassword(PassIn.getText());
-                if(loginSuccess(Username, Password){
-                  //TODO
+                if(loginSuccess(Username, Password)){
+                  setUpMain();
                 }
                 else{
                   //TODO
@@ -59,11 +61,35 @@ public class SteamGUI extends Application{
             }
         });
       
-      Vbox login = new Vbox();
+      Button guestbtn = new Button();
+      guestbtn.setText("Guest");
+      guestbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+         @Override
+         public void handle(MouseEvent event){
+            setUpMainGuest();
+         }
+      
+      });
+      
+      Hbox buttons = new Hbox(loginbtn, guestbtn);
+      
+      Vbox login = new Vbox(userin, passin, buttons);
       return login;
    }
    
    public void start(Stage primaryStage){
+      this.primaryStage = primaryStage;
+      prime = new BorderPane();
+      prime.setCenter(loginWindow());
+      Scene scene = new Scene(prime);
+      primaryStage.show();
+   }
+   
+   public void setUpMain(){
+   
+   }
+   
+   public void setUpMainGuest(){
    
    }
 }
