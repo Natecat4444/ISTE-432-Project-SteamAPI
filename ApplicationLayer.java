@@ -1,4 +1,5 @@
 import java.util.*;
+import java.text.*;
 import java.net.*;
 import java.io.*; 
 import org.json.simple.parser.JSONParser;
@@ -8,7 +9,8 @@ import org.json.simple.parser.ParseException;
 
 public class ApplicationLayer{
 
-   HashMap<Long, String> hmap = new HashMap<Long, String>();
+   private HashMap<Long, String> hmap = new HashMap<Long, String>();
+   private ArrayList<String> al = new ArrayList<String>();
    
    public ApplicationLayer(){
    }
@@ -69,6 +71,58 @@ public class ApplicationLayer{
       hmap.put(appid,name);
          
    }
+   public ArrayList<String> NewsInfo(String key){
+   String json="";
+      try{
+         URL newsUrl = new URL("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid="+key);
+          BufferedReader read = new BufferedReader(
+            new InputStreamReader(newsUrl.openStream()));
+         String i;
+         while ((i = read.readLine()) != null){
+            json += i;
+         }
+         GetNews(json);
+         
+         
+       }catch(Exception e){
+         System.out.println("Eorror on getting the news informations!");
+       }  
+        
+        return al;
+   }private void GetNews(String jsonObj){
+   
+      JSONParser jsonParser = new JSONParser();
+         
+      try 
+      {
+            //Read JSON String
+         JSONObject obj = (JSONObject) jsonParser.parse(jsonObj);
+         JSONObject app = (JSONObject) obj.get("appnews");
+         JSONArray newslist = (JSONArray) app.get("newsitems");
+          
+            //Iterate over app array
+        newslist.forEach( news -> parseNewsObject( (JSONObject) news ) );
+      
+      } catch (ParseException e) {
+         e.printStackTrace();
+      }
+   }
+   private void parseNewsObject(JSONObject news) 
+   {
+      String newsTitle = (String) news.get("title");
+      Long unix_seconds = (Long) news.get("date");
+      
+      Date date = new Date(unix_seconds*1000L); 
+      // format of the date
+      SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+      jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+      String java_date = jdf.format(date);
+      
+      al.add("News Title: "+newsTitle);
+      al.add("Date: "+java_date+"\n");
+         
+   }
+
 
    
   

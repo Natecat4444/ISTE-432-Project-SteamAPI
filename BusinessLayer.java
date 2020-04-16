@@ -11,12 +11,12 @@ import org.json.simple.parser.ParseException;
 
 public class BusinessLayer{
 
-   HashMap<Long, String> hmap = new HashMap<Long,String>();
-   
+   private HashMap<Long, String> hmap = new HashMap<Long,String>();
+   private ApplicationLayer al = new ApplicationLayer();
    
    public BusinessLayer(){
    
-   ApplicationLayer al = new ApplicationLayer();
+   
       hmap = al.run();
       while((hmap == null)==true){
          al.run();
@@ -56,8 +56,13 @@ public class BusinessLayer{
                   Long key = Long. parseLong(keyString);
                   String value = hmap.get(key);  
                
-                  if(!value.equals(null)){   
-                     return ("AppID: "+key+" Name: "+value);
+                  if(!value.equals(null)){ 
+                     
+                     String appid = String.valueOf(key);
+                      
+                     
+                     return ("AppID: "+key+" Name: "+value+"\n"+al.NewsInfo(appid));
+                     
                   }
                }catch(NumberFormatException nfe){
                   return ("Please enter AppID!");
