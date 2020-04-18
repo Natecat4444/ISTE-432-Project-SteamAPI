@@ -1,3 +1,6 @@
+import org.junit.Test;
+import org.junit.Ignore;
+import static org.junit.Assert.assertEquals;
 import java.util.*;
 import java.text.*;
 import java.net.*;
@@ -89,7 +92,26 @@ public class ApplicationLayer{
        }  
         
         return al;
-   }private void GetNews(String jsonObj){
+   }
+   
+   @Test
+   public void testNewsInfo(){
+   
+   try{   
+      System.out.println("Start Testing Application Layer NewsInfo()!");
+
+     
+       assertEquals(al, NewsInfo("500"));
+     
+        System.out.println("Test passed!");
+      }catch(org.junit.ComparisonFailure e){
+         System.out.println(e.toString()+"\nTest Failed! ");
+      }
+
+   
+   }
+   
+   private void GetNews(String jsonObj){
    
       JSONParser jsonParser = new JSONParser();
          
@@ -124,15 +146,6 @@ public class ApplicationLayer{
    }
 
 
-   
-  
-   
-   
-   
-   public static void main(String [] args){
-      
-         
-   }
 
 
 }

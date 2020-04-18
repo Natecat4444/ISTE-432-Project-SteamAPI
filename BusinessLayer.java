@@ -1,7 +1,7 @@
+import org.junit.Test;
+import org.junit.Ignore;
+import static org.junit.Assert.assertEquals;
 import java.util.*;
-// import javax.swing.*;
-// import java.awt.*;
-// import java.awt.event.*;
 import java.net.*;
 import java.io.*;  // Import the File class
 import org.json.simple.parser.JSONParser;
@@ -25,30 +25,6 @@ public class BusinessLayer{
    
    }
       
-     //  JPanel centerPanel = new JPanel();
-//       JButton keySearch = new JButton("AppID Search");
-//       JButton valueSearch = new JButton("Name Search");
-//       
-//       
-//       keySearch.setEnabled(false);
-//       valueSearch.setEnabled(false);
-//       setLayout(new BorderLayout());
-//      
-//       centerPanel.add(keySearch);
-//       centerPanel.add(valueSearch);
-//      
-//       keySearch.addActionListener(
-//          new ActionListener(){
-//             public void actionPerformed(ActionEvent ae){
-//                //Presentation UI Creation
-//                JPanel messagePanel = new JPanel();
-//                JTextField keyword = new JTextField(10);
-//                JLabel title = new JLabel("AppID:");
-//             
-//                messagePanel.add(title);
-//                messagePanel.add(keyword);
-//                JOptionPane.showMessageDialog(null,messagePanel); 
-               //Business code interaction
                
          public String searchFromKey(String keyString){
          
@@ -71,20 +47,7 @@ public class BusinessLayer{
                }
                   return ("AppID invalid");    
             }
-         // });
-         
-      // valueSearch.addActionListener(
-//          new ActionListener(){
-//             public void actionPerformed(ActionEvent ae){
-//                JPanel messagePanel = new JPanel();
-//                JTextField keyword = new JTextField(10);
-//                JLabel title = new JLabel("Name:");
-//             
-//                messagePanel.add(title);
-//                messagePanel.add(keyword);
-//                JOptionPane.showMessageDialog(null,messagePanel); 
-//                 
-
+       
          public ArrayList<String> searchFromValue(String valueString){
          
          ArrayList<String> searchList = new ArrayList<String>();
@@ -144,23 +107,22 @@ public class BusinessLayer{
                
                return searchList;
             }
-         // });
-      //Presentation UI Creation
-      // add(centerPanel, BorderLayout.CENTER);
-//      
-//       pack();
-//       setLocationRelativeTo(null);
-//       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//       setVisible(true);
-         
-      //Application API interaction  
-         
-      
-      // keySearch.setEnabled(true);
-//       valueSearch.setEnabled(true);
-  // }
+   @Test
+   public void  testRun() {
    
-   
+        
+     try{   
+      System.out.println("Start Testing Business Layer searchFromKey()!");
+
+     
+       assertEquals("Please enter AppID!", searchFromKey("asd"));
+       assertEquals("AppID invalid", searchFromKey("1"));
+     
+        System.out.println("Test passed!");
+      }catch(org.junit.ComparisonFailure e){
+         System.out.println(e.toString()+"\nTest Failed! ");
+      }
+   }
     
    public static void main(String[] args) throws Exception{
    
