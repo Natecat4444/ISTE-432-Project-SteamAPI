@@ -8,8 +8,7 @@ create table userInfo(username varchar(255), pass varchar(255), id int NOT NULL,
 -- ID will be a 6 character length of numbers
 create table favorites(gameName varchar(255), id int NOT NULL, CONSTRAINT fav_pk PRIMARY KEY (id));
 
-INSERT INTO userInfo VALUES ("testUser", "password", 123456);
+INSERT INTO userInfo VALUES ("testUser", "sha1:64000:18:IdVIuuzbN0KOXgAdAnGuN8HLj2c1FjyL:SmuyqX58OLjTjM9N5GtrlnLU", 123456);
 INSERT INTO favorites VALUES ("Counter-Strike: Global Offensive", 123456);
 
 select * from userInfo;
-select * from favorites;
