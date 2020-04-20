@@ -117,10 +117,13 @@ public class BusinessLayer{
      
        assertEquals("Please enter AppID!", searchFromKey("asd"));
        assertEquals("AppID invalid", searchFromKey("1"));
+       String name = "The Doorbreaker";
+       assertEquals("AppID: 699480 Name: "+name+"\n"+al.NewsInfo("699480"), searchFromKey("699480"));
      
         System.out.println("Test passed!");
       }catch(org.junit.ComparisonFailure e){
          System.out.println(e.toString()+"\nTest Failed! ");
+         e.printStackTrace();
       }
    }
     

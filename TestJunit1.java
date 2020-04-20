@@ -8,13 +8,12 @@ public class TestJunit1 {
    
    BusinessLayer bl = new BusinessLayer();
    ApplicationLayer al = new ApplicationLayer();
-   dbLayer db = new dbLayer();   
+   
    public  TestJunit1(){
       
-         
-    bl.testRun();
-    al.testNewsInfo();
-    db.testRun();
+      
+      bl.testRun();
+      al.testNewsInfo();
    }
    
    public static void main(String [] args){
@@ -27,3 +26,4 @@ public class TestJunit1 {
 }
 
   
+	
