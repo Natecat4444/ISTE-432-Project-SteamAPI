@@ -597,5 +597,22 @@ public class BusinessLayer{
 
 ```
 
+Milestone 6: Testing
+
+
+
+The testing framework we use for this program is JUnit. There are 3 major tests we are currently performing, one in each of the application, business, and data layers. While all the test methods are located in their respective layers, we have a dedicated class for the tests that calls them all, called TestJunit1.java. This class processes each test one by one, signalling when each starts and whether it is successful or if it failed. Each of the tests is meant to make sure the connection between the application and the destination, whether it is the database or the Steam API, is active and working.
+
+
+The test in the application layer is located from line 97 to line 112. The purpose of this test is to make sure the program can retrieve news information from the API. To do this, it connects to the API and retrieves the news list for a sample game. The test checks to make sure that retrieving the news feed does indeed return something. For this test, the game chosen is the ID 500, which corresponds to “Left 4 Dead”, an older game released in 2008. Because it is released by Valve, who are the creators of Steam, and due to its age, it is highly unlikely for the game to be removed from the service for any reason, so it should always return something. This means that if there is an error, the most likely cause is the connection between the program and the API being broken.
+
+
+
+The test in the business layer is located from line 110 to line 128. The purpose of this test is to make sure the user is able to reliably search through the applications on Steam. When the program first starts up, it fetches all of the games on steam through the API, and saves them to an array. This is done because the only way to find a game on Steam in the API is to grab a list of all of them. When the user is searching through games, they are actually searching this array. The unit test makes sure that this array is functioning. It first checks to make sure that the searching functions are working by feeding it a pair of searches that shouldn’t come back with anything. Then it checks to make sure that the searching the array properly works by searching for a sample game. This game is ID 699480, which corresponds to “The Doorbreaker”. The reason this game was chosen is due to how the searching works - picking a game like Left 4 Dead will come up with a large list of results, due to large amounts of DLC, a sequel, and more. The Doorbreaker, on the other hand, is made by a small studio and has no DLC, which means it will always have just one result.
+
+
+The test in the data layer is located from line 104 to line 117. The purpose of this test is to make sure the program is able to connect to the database, and that users are able to login. First, the test attempts to connect to the database, as it normally would when a user logs in. If this doesn’t work, it means the database is offline or disconnected. If it does work, the test then attempts to log in with hard-coded test credentials saved in the database. This serves to test a few things - first, it tests that the database currently has all the data it should have, as if the test credentials are missing it means the database was wiped somehow. It also tests to make sure the password hashing method is working properly, which is essential for logging in and to make sure users’ information is secure.
+
+
 
 
