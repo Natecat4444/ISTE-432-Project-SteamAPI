@@ -6,8 +6,8 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Hbox;
-import javafx.scene.layout.Vbox;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Label;
@@ -19,7 +19,9 @@ public class SteamGUI extends Application{
    private static String Username = "";
    private static String Password = "";
    private static BorderPane prime;
-   private static BuisnessLayer BL;
+   private static BusinessLayer BL;
+   private static TextField userIn;
+   private static PasswordField passIn;
    
    private void setUsername(String Username){
       this.Username = Username;
@@ -34,24 +36,24 @@ public class SteamGUI extends Application{
       return false;
    }
    
-   private Vbox loginWindow(){
-      TextField userin = new TextField();
-      PasswordField passin = new PasswordField();
+   private VBox loginWindow(){
+      userIn = new TextField();
+      passIn = new PasswordField();
       
       Label label1 = new Label("Username: ");
       Label label2 = new Label("Password: ");
       
-      Hbox Hbox1 = new Hbox(label1, userin);
+      HBox HBox1 = new HBox(label1, userin);
       
-      Hbox Hbox2 = new Hbox(label2, passin);
+      HBox HBox2 = new HBox(label2, passin);
       
       Button loginbtn = new Button();
       loginbtn.setText("login");
       loginbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                setUsername(UserIn.getText());
-                setPassword(PassIn.getText());
+                setUsername(userIn.getText());
+                setPassword(passIn.getText());
                 if(loginSuccess(Username, Password)){
                   setUpMain();
                 }
@@ -72,9 +74,9 @@ public class SteamGUI extends Application{
       
       });
       
-      Hbox buttons = new Hbox(loginbtn, guestbtn);
+      HBox buttons = new HBox(loginbtn, guestbtn);
       
-      Vbox login = new Vbox(userin, passin, buttons);
+      VBox login = new VBox(HBox1, HBox2, buttons);
       return login;
    }
    
