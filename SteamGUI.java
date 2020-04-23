@@ -19,7 +19,7 @@ public class SteamGUI extends Application{
    private static String Username = "";
    private static String Password = "";
    private static BorderPane prime;
-   private static BusinessLayer BL;
+   // private static BusinessLayer BL;
    private static TextField userIn;
    private static PasswordField passIn;
    
@@ -43,9 +43,9 @@ public class SteamGUI extends Application{
       Label label1 = new Label("Username: ");
       Label label2 = new Label("Password: ");
       
-      HBox HBox1 = new HBox(label1, userin);
+      HBox HBox1 = new HBox(label1, userIn);
       
-      HBox HBox2 = new HBox(label2, passin);
+      HBox HBox2 = new HBox(label2, passIn);
       
       Button loginbtn = new Button();
       loginbtn.setText("login");
@@ -81,7 +81,7 @@ public class SteamGUI extends Application{
    }
    
    public void start(Stage primaryStage){
-      BL = new BuisnessLayer();
+      // BL = new BuisnessLayer();
       this.primaryStage = primaryStage;
       prime = new BorderPane();
       prime.setCenter(loginWindow());
