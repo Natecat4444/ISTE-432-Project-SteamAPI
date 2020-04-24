@@ -16,6 +16,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Alert.*;
+
 public class SteamGUI extends Application{
    static Stage primaryStage;
    private static String Username = "";
@@ -188,7 +189,7 @@ public class SteamGUI extends Application{
    public void setUpMain(){
       tabs = new TabPane();
       
-  //    tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILIBLE);
+      tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
       
       Tab Favorites = new Tab("Favorites", favorites());
       Tab Search = new Tab("Search", Search());
@@ -216,7 +217,7 @@ public class SteamGUI extends Application{
    public void setUpMainGuest(){
       tabs = new TabPane();
       
-  //    tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILIBLE);
+      tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
       
       Tab Search = new Tab("Search", Search());
       
