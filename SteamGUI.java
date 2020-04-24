@@ -14,8 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
-
-
+import javafx.scene.control.Tab;
+import javafx.scene.control.Alert.*;
 public class SteamGUI extends Application{
    static Stage primaryStage;
    private static String Username = "";
@@ -28,17 +28,20 @@ public class SteamGUI extends Application{
    private static dbLayer db;
    private static Boolean loggedIn;
    
-   private void setUsername(String Username){
+   private String setUsername(String Username){
       this.Username = Username;
+      return Username;
    }
    
-   private void setPassword(String Password){
+   private String setPassword(String Password){
       this.Password = Password;
+      return Password;
    }
    
    private boolean loginSuccess(String Username, String Password){
-      //TODO MIKE
-      return false;
+      db.connect();
+      boolean testHash = db.login(Username, Password);
+      return testHash;
    }
    
    private void regesterWindow(){
@@ -59,9 +62,22 @@ public class SteamGUI extends Application{
       loginbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                setUsername(userIn.getText());
-                setPassword(passIn.getText());
+              String user = setUsername(userIn.getText());
+              String pass = setPassword(passIn.getText());
+           //   System.out.println("user: "+user);
+           //  System.out.println("Pass: "+pass);
                 //TODO MIKE
+                db.connect();
+                int regInt = db.register(user, pass);
+                
+                if(regInt == 1){
+                  // ADD ALERT FOR REGISTERED SUCCESSFULLY
+                  // instead of sout (NATHAN)
+                  System.out.println("Registered Successfully");
+                  
+                }else{
+                  System.out.println("Couldn't register");
+                }//end ifelse
                 prime.setCenter(loginWindow());
             }
         });
@@ -103,6 +119,7 @@ public class SteamGUI extends Application{
                 setUsername(userIn.getText());
                 setPassword(passIn.getText());
                 if(loginSuccess(Username, Password)){
+                
                   loggedIn = true;
                   setUpMain();
                 }
@@ -145,6 +162,9 @@ public class SteamGUI extends Application{
       loggedIn = false;
       this.primaryStage = primaryStage;
       prime = new BorderPane();
+      
+      prime.setPrefWidth(500);
+      prime.setPrefHeight(300);
       prime.setCenter(loginWindow());
       Scene scene = new Scene(prime);
       primaryStage.setScene(scene);
@@ -152,17 +172,23 @@ public class SteamGUI extends Application{
    }
    
    public VBox favorites(){
-   
+      VBox vboxtest = new VBox();
+      
+      return vboxtest;
+      
    }
    
    public VBox Search(){
-   
+      VBox test2 = new VBox();
+      
+      return test2;
+      
    }
    
    public void setUpMain(){
       tabs = new TabPane();
       
-      tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILIBLE);
+  //    tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILIBLE);
       
       Tab Favorites = new Tab("Favorites", favorites());
       Tab Search = new Tab("Search", Search());
@@ -178,7 +204,7 @@ public class SteamGUI extends Application{
             prime.setCenter(loginWindow());
          }
       
-      })
+      });
       
       HBox Hbox = new HBox(tabs, logout);
       
@@ -190,7 +216,7 @@ public class SteamGUI extends Application{
    public void setUpMainGuest(){
       tabs = new TabPane();
       
-      tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILIBLE);
+  //    tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILIBLE);
       
       Tab Search = new Tab("Search", Search());
       
@@ -204,7 +230,7 @@ public class SteamGUI extends Application{
             prime.setCenter(loginWindow());
          }
       
-      })
+      });
       
       HBox Hbox = new HBox(tabs, logout);
       
