@@ -37,7 +37,7 @@ public class SteamGUI extends Application{
    }
    
    private boolean loginSuccess(String Username, String Password){
-      //TODO
+      //TODO MIKE
       return false;
    }
    
@@ -61,6 +61,7 @@ public class SteamGUI extends Application{
             public void handle(MouseEvent event) {
                 setUsername(userIn.getText());
                 setPassword(passIn.getText());
+                //TODO MIKE
                 prime.setCenter(loginWindow());
             }
         });
@@ -140,6 +141,7 @@ public class SteamGUI extends Application{
    
    public void start(Stage primaryStage){
       BL = new BusinessLayer();
+      db = new dbLayer();
       loggedIn = false;
       this.primaryStage = primaryStage;
       prime = new BorderPane();
@@ -149,12 +151,64 @@ public class SteamGUI extends Application{
       primaryStage.show();
    }
    
-   public void setUpMain(){
+   public VBox favorites(){
    
    }
    
-   public void setUpMainGuest(){
+   public VBox Search(){
    
+   }
+   
+   public void setUpMain(){
+      tabs = new TabPane();
+      
+      tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILIBLE);
+      
+      Tab Favorites = new Tab("Favorites", favorites());
+      Tab Search = new Tab("Search", Search());
+      
+      tabs.getTabs().add(Favorites);
+      tabs.getTabs().add(Search);
+      
+      Button logout = new Button();
+      logout.setText("Logout");
+      logout.setOnMouseClicked(new EventHandler<MouseEvent>() {
+         @Override
+         public void handle(MouseEvent event){
+            prime.setCenter(loginWindow());
+         }
+      
+      })
+      
+      HBox Hbox = new HBox(tabs, logout);
+      
+      prime.setTop(Hbox);
+      prime.setCenter(favorites());
+   }
+   
+   
+   public void setUpMainGuest(){
+      tabs = new TabPane();
+      
+      tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILIBLE);
+      
+      Tab Search = new Tab("Search", Search());
+      
+      tabs.getTabs().add(Search);
+
+      Button logout = new Button();
+      logout.setText("Login");
+      logout.setOnMouseClicked(new EventHandler<MouseEvent>() {
+         @Override
+         public void handle(MouseEvent event){
+            prime.setCenter(loginWindow());
+         }
+      
+      })
+      
+      HBox Hbox = new HBox(tabs, logout);
+      
+      prime.setTop(Hbox);
    }
    
    public static void main(String[] args){
