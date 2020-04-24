@@ -1,4 +1,5 @@
 import java.util.*;
+import java.text.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -6,7 +7,7 @@ import java.net.*;
 import java.io.*;  // Import the File class
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org. json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 public class APILayer extends JFrame {
@@ -46,6 +47,9 @@ public class APILayer extends JFrame {
                
                   if(!value.equals(null)){   
                      System.out.println("AppID: "+key+" Name: "+value);
+                     
+                     String appid = String.valueOf(key);
+                     NewsInfo(appid);
                   }
                }catch(NumberFormatException nfe){
                   System.out.println("Please enter AppID!");
@@ -69,38 +73,55 @@ public class APILayer extends JFrame {
                JOptionPane.showMessageDialog(null,messagePanel); 
                 
                try{
-                  String value = keyword.getText();
-                  Long key = 0L;
-                  ArrayList<String> searchList = new ArrayList<String>();
-                                       
-                  for(Map.Entry entry: hmap.entrySet()){
+                  if(!keyword.getText().equals("")){
+                     String value = keyword.getText();
+                     Long key = 0L;
+                     Long mainKey = 0L;
+                     String mainName = "";
+                     ArrayList<String> searchList = new ArrayList<String>();
+                     System.out.println("");                     
+                     for(Map.Entry entry: hmap.entrySet()){
                         boolean isFound = false;
                         String word = entry.toString();
                         isFound = word.contains(value);
                         
                         if (isFound == true){
-                        Object oj = entry.getKey();
-                        int inde = word.indexOf(value);
-                        String name = word.substring(inde);
-                        key = Long. parseLong(oj.toString());
-                          searchList.add("AppID: "+key+" Name: "+name); 
+                           Object oj = entry.getKey();
+                           int inde = word.indexOf("=");
+                           String name = word.substring(inde+1);
+                           key = Long. parseLong(oj.toString());
+                           searchList.add("AppID: "+key+" Name: "+name);
+                           System.out.println("AppID: "+key+" Name: "+name);
+                           if(value.equals(entry.getValue())){
+                              mainName = name;
+                              mainKey = Long. parseLong(oj.toString());
+                              
+                           }   
                         }
-                        
-                         
-                     
-                  }
-                  
-                  if(key == 0L){
-                     System.out.println("No game is match!");
-                  }else{
-                     for(String game: searchList){
-                        System.out.println(game);
                      }
-                     System.out.println("\n"+searchList.size()+" games are searched.");
+                  
+                     if(key == 0L){
+                        System.out.println("No game are matched!");
+                     }
+                     else{
+                        for(String game: searchList){
+                           System.out.println(game);
+                        }
+                        System.out.println("\n"+searchList.size()+" games are searched.");
+                     
+                        if(mainKey != 0L){
+                           System.out.println("\nOne game is exactly matched: AppID: "+mainKey+" Name: "+mainName);
+                        }else if(mainKey == 0L){
+                           System.out.println("\nNo game are exactly matched!");
+                        }else{
+                           System.out.println("No game are matched!");
+                        }
+                     }
+                  }else{
+                     System.out.println("Please enter the Name!");
                   }
-                
                }catch(NumberFormatException nfe){
-                  System.out.println("Please enter AppID!");
+                  System.out.println("Please enter the AppID!");
                }catch(NullPointerException ne){
                
                   System.out.println("AppID invalid");
@@ -132,6 +153,9 @@ public class APILayer extends JFrame {
       }     
       System.out.println("Loading to the appID ......");       
       readJson(json);
+      while((hmap == null)==true){
+         readJson(json);
+      }
       System.out.println("Compeleted!\n");
       keySearch.setEnabled(true);
       valueSearch.setEnabled(true);
@@ -154,6 +178,55 @@ public class APILayer extends JFrame {
       } catch (ParseException e) {
          e.printStackTrace();
       }
+   }
+   private void NewsInfo(String key){
+   String json="";
+      try{
+         URL newsUrl = new URL("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid="+key);
+          BufferedReader read = new BufferedReader(
+            new InputStreamReader(newsUrl.openStream()));
+         String i;
+         while ((i = read.readLine()) != null){
+            json += i;
+         }
+         GetNews(json);
+       }catch(Exception e){
+         System.out.println("Eorror on getting the news informations!");
+       }  
+        
+        
+   }private void GetNews(String jsonObj){
+   
+      JSONParser jsonParser = new JSONParser();
+         
+      try 
+      {
+            //Read JSON String
+         JSONObject obj = (JSONObject) jsonParser.parse(jsonObj);
+         JSONObject app = (JSONObject) obj.get("appnews");
+         JSONArray newslist = (JSONArray) app.get("newsitems");
+          
+            //Iterate over app array
+        newslist.forEach( news -> parseNewsObject( (JSONObject) news ) );
+      
+      } catch (ParseException e) {
+         e.printStackTrace();
+      }
+   }
+   private void parseNewsObject(JSONObject news) 
+   {
+      String newsTitle = (String) news.get("title");
+      Long unix_seconds = (Long) news.get("date");
+      
+      Date date = new Date(unix_seconds*1000L); 
+      // format of the date
+      SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+      jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+      String java_date = jdf.format(date);
+      
+      System.out.println("News Title: "+newsTitle);
+      System.out.println("Date: "+java_date+"\n");
+         
    }
   
    private void parseAppObject(JSONObject app) 
