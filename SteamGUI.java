@@ -181,7 +181,15 @@ public class SteamGUI extends Application{
          public void handle(MouseEvent event){
             String helps = "Troubleshoot tips:\n 1. Is MySQL installed\n 2. is the database provided in createDB installed\n 3. is root/student a valid log in for the MySQL server \n 4. Is your internet connection working";
             Label helplab = new Label(helps);
-            VBox vbox = new VBox(helplab);
+            Button close = new Button();
+            close.setText("Close");
+            close.setOnMouseClicked(new EventHandler<MouseEvent>() {
+               @Override
+               public void handle(MouseEvent event){
+                  prime.setRight(help());
+               }
+            });
+            VBox vbox = new VBox(helplab, close);
             prime.setRight(vbox);
             System.out.println("help clicked");
          }
