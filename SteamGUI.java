@@ -167,9 +167,28 @@ public class SteamGUI extends Application{
       prime.setPrefWidth(500);
       prime.setPrefHeight(300);
       prime.setCenter(loginWindow());
+      prime.setRight(help());
       Scene scene = new Scene(prime);
       primaryStage.setScene(scene);
       primaryStage.show();
+   }
+   
+   public VBox help(){
+      Button help = new Button();
+      help.setText("Help");
+      help.setOnMouseClicked(new EventHandler<MouseEvent>() {
+         @Override
+         public void handle(MouseEvent event){
+            String helps = "Troubleshoot tips:\n 1. Is MySQL installed\n 2. is the database provided in createDB installed\n 3. is root/student a valid log in for the MySQL server \n 4. Is your internet connection working";
+            Label helplab = new Label(helps);
+            VBox vbox = new VBox(helplab);
+            prime.setRight(vbox);
+            System.out.println("help clicked");
+         }
+      
+      });
+      VBox halp = new VBox(help);
+      return halp;
    }
    
    public VBox favorites(){
