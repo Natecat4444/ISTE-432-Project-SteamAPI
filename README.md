@@ -614,5 +614,14 @@ The test in the business layer is located from line 110 to line 128. The purpose
 The test in the data layer is located from line 104 to line 117. The purpose of this test is to make sure the program is able to connect to the database, and that users are able to login. First, the test attempts to connect to the database, as it normally would when a user logs in. If this doesn’t work, it means the database is offline or disconnected. If it does work, the test then attempts to log in with hard-coded test credentials saved in the database. This serves to test a few things - first, it tests that the database currently has all the data it should have, as if the test credentials are missing it means the database was wiped somehow. It also tests to make sure the password hashing method is working properly, which is essential for logging in and to make sure users’ information is secure.
 
 
+Milestone 7: Installation
 
 
+To be able to run this application, the user should download it from https://github.com/Natecat4444/ISTE-432-Project-SteamAPI, choosing the “Download ZIP” option. Once downloaded, the user should extract the folder to a location of their choice. The user will need the following files in that folder:
+
+
+createDB.sql
+SteamNews.jar
+run.bat (For Windows users only)
+For users that want to be able to create an account and log-in to save their favorite games, they will need MySQL and the createDB.sql file. Running that file in MySQL will create the database necessary to be able to save favorite games.
+Once the files necessary are downloaded, and the database is created, the user can launch the program. If the user is on Mac or Linux, they can run SteamNews.jar to launch the program. Windows users should use the run.bat file instead to launch, though they will still need to have the SteamNews.jar file in that folder to be able to do so. Users on any operating system are also able to run the program by opening the folder in command prompt and typing “java -jar SteamNews.jar”.
