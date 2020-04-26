@@ -16,6 +16,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Alert.*;
+import javafx.scene.control.TextField;
 
 public class SteamGUI extends Application{
    static Stage primaryStage;
@@ -207,7 +208,27 @@ public class SteamGUI extends Application{
    }
    
    public VBox Search(){
-      VBox test2 = new VBox();
+      TextField apptext = new TextField();
+      TextField nametext = new TextField();
+      
+      Label applab = new Label("AppID");
+      Label namelab = new Label("Name");
+      
+      Button appbtn = new Button();
+      appbtn.setText("Search");
+      appbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+         @Override
+         public void handle(MouseEvent event){
+            BL.searchFromKey(apptext.getText());
+         }
+      });
+      
+      Button namebtn = new Button()
+      namebtn.setText("Search")
+      
+      HBox appsearch = new HBox(applab, apptext);
+      HBox namesearch = new HBox(namelab, nametext);
+      VBox test2 = new VBox(appsearch, namesearch);
       
       return test2;
       
@@ -263,6 +284,7 @@ public class SteamGUI extends Application{
       HBox Hbox = new HBox(tabs, logout);
       
       prime.setTop(Hbox);
+      prime.setCenter(Search());
    }
    
    public static void main(String[] args){
