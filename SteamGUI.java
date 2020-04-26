@@ -22,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.scene.Group;
 import java.util.ArrayList;
 
 public class SteamGUI extends Application{
@@ -188,7 +189,7 @@ public class SteamGUI extends Application{
       help.setOnMouseClicked(new EventHandler<MouseEvent>() {
          @Override
          public void handle(MouseEvent event){
-            String helps = "Troubleshoot tips:\n 1. Is MySQL installed\n 2. is the database provided in createDB installed\n 3. is root/student a valid log in for the MySQL server \n 4. Is your internet connection working";
+            String helps = "Troubleshoot tips:\n 1. Is MySQL installed\n 2. is the database provided in createDB installed\n 3. is root/student a valid log in for the MySQL server \n 4. Is your internet connection working \n 5. Results not loading? rebooting may fix the problem";
             Label helplab = new Label(helps);
             Button close = new Button();
             close.setText("Close");
@@ -264,7 +265,7 @@ public class SteamGUI extends Application{
          
          int max = results.size();
          
-         if(results.size() > 3){
+         if(results.size() >= 3){
             max = max-2;
          }
          
