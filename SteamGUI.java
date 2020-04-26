@@ -17,6 +17,7 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Alert.*;
 import javafx.scene.control.TextField;
+import java.util.ArrayList;
 
 public class SteamGUI extends Application{
    static Stage primaryStage;
@@ -24,6 +25,7 @@ public class SteamGUI extends Application{
    private static String Password = "";
    private static BorderPane prime;
    private static BusinessLayer BL;
+   private static ApplicationLayer AL;
    private static TextField userIn;
    private static PasswordField passIn;
    private static TabPane tabs;
@@ -161,6 +163,7 @@ public class SteamGUI extends Application{
    public void start(Stage primaryStage){
       BL = new BusinessLayer();
       db = new dbLayer();
+      AL = new ApplicationLayer();
       loggedIn = false;
       this.primaryStage = primaryStage;
       prime = new BorderPane();
@@ -219,7 +222,10 @@ public class SteamGUI extends Application{
       appbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
          @Override
          public void handle(MouseEvent event){
-            ArrayList<String> results = BL.searchFromKey(apptext.getText());
+            String result = BL.searchFromKey(apptext.getText());
+            ArrayList<String> results = new ArrayList();
+            results.add(result);
+            prime.setCenter(Searchp2(results));
          }
       });
       
@@ -228,21 +234,52 @@ public class SteamGUI extends Application{
       namebtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
          @Override
          public void handle(MouseEvent event){
-            ArrayList<String> results = BL.searchFromValue(nameText.getText());
+            ArrayList<String> results = BL.searchFromValue(nametext.getText());
+            prime.setCenter(Searchp2(results));
          }
       });
       
-      public VBox Searchp2(){
-         VBox res = new VBox();
-      }
-      
-      HBox appsearch = new HBox(applab, apptext);
-      HBox namesearch = new HBox(namelab, nametext);
+      HBox appsearch = new HBox(applab, apptext, appbtn);
+      HBox namesearch = new HBox(namelab, nametext, namebtn);
       VBox test2 = new VBox(appsearch, namesearch);
       
       return test2;
       
    }
+      
+      public VBox Searchp2(ArrayList<String> results){
+         ArrayList<Button> buttons = new ArrayList();
+         Label label = new Label("Results");
+         VBox res = new VBox(label);
+         
+         for(int k = 0; k<results.size(); k++){
+            Button button = new Button();
+            button.setText(results.get(k));
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+               @Override
+               public void handle(MouseEvent event){
+                  for(int y=0; y<buttons.size(); y++){
+                     Button clicked = (Button)event.getSource();
+                     int p = 0;
+                     while(!buttons.get(p).equals(clicked)){
+                        p++;
+                     }
+                     displayNews(results.get(p));
+                  }
+                  
+               }
+            });
+            res.getChildren().add(button);
+         }
+         return res;
+      }
+      
+      public void displayNews(String keys){
+         if(loggedIn){
+            //Favorites button will go here
+         }
+      }
+     
    
    public void setUpMain(){
       tabs = new TabPane();
