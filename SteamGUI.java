@@ -251,26 +251,28 @@ public class SteamGUI extends Application{
          ArrayList<Button> buttons = new ArrayList();
          Label label = new Label("Results");
          VBox res = new VBox(label);
+         System.out.println("Results: "+results.size());
          
-         for(int k = 0; k<results.size(); k++){
+         for(int k = 0; k<results.size()-2; k++){
             Button button = new Button();
             button.setText(results.get(k));
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
                @Override
                public void handle(MouseEvent event){
-                  for(int y=0; y<buttons.size(); y++){
                      Button clicked = (Button)event.getSource();
                      int p = 0;
                      while(!buttons.get(p).equals(clicked)){
                         p++;
                      }
+                     System.out.println(p);
                      displayNews(results.get(p));
-                  }
                   
                }
             });
+            buttons.add(button);
             res.getChildren().add(button);
          }
+         System.out.println("Results set");
          return res;
       }
       
@@ -278,6 +280,9 @@ public class SteamGUI extends Application{
          if(loggedIn){
             //Favorites button will go here
          }
+         System.out.println(keys);
+         String[] keysplit = keys.split(" ");
+         System.out.println("AppID: "+keysplit[1]);
       }
      
    
@@ -310,6 +315,7 @@ public class SteamGUI extends Application{
    
    
    public void setUpMainGuest(){
+      prime.setCenter(Search());
       tabs = new TabPane();
       
       tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
@@ -331,7 +337,7 @@ public class SteamGUI extends Application{
       HBox Hbox = new HBox(tabs, logout);
       
       prime.setTop(Hbox);
-      prime.setCenter(Search());
+      
    }
    
    public static void main(String[] args){
