@@ -219,12 +219,22 @@ public class SteamGUI extends Application{
       appbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
          @Override
          public void handle(MouseEvent event){
-            BL.searchFromKey(apptext.getText());
+            ArrayList<String> results = BL.searchFromKey(apptext.getText());
          }
       });
       
-      Button namebtn = new Button()
-      namebtn.setText("Search")
+      Button namebtn = new Button();
+      namebtn.setText("Search");
+      namebtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+         @Override
+         public void handle(MouseEvent event){
+            ArrayList<String> results = BL.searchFromValue(nameText.getText());
+         }
+      });
+      
+      public VBox Searchp2(){
+         VBox res = new VBox();
+      }
       
       HBox appsearch = new HBox(applab, apptext);
       HBox namesearch = new HBox(namelab, nametext);
