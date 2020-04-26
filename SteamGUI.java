@@ -17,6 +17,11 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Alert.*;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import java.util.ArrayList;
 
 public class SteamGUI extends Application{
@@ -283,6 +288,12 @@ public class SteamGUI extends Application{
          System.out.println(keys);
          String[] keysplit = keys.split(" ");
          System.out.println("AppID: "+keysplit[1]);
+         ArrayList<String> results = AL.NewsInfo(keysplit[1]);
+         System.out.println("Number of News Items: "+results.size());
+         VBox news = new VBox();
+         for(int r =0; r<results.size(); r++){
+         
+         }
       }
      
    
