@@ -229,7 +229,11 @@ public class SteamGUI extends Application{
          public void handle(MouseEvent event){
             String result = BL.searchFromKey(apptext.getText());
             ArrayList<String> results = new ArrayList();
-            results.add(result);
+            System.out.println("Appidsearch: " +result);
+            String[] framents = result.split("News");
+            String p1 = framents[0];
+            results.add(p1.substring(0, framents[0].length()-2));
+            System.out.println("Appidsearchp2: " +results.get(0));
             prime.setCenter(Searchp2(results));
          }
       });
@@ -258,7 +262,13 @@ public class SteamGUI extends Application{
          VBox res = new VBox(label);
          System.out.println("Results: "+results.size());
          
-         for(int k = 0; k<results.size()-2; k++){
+         int max = results.size();
+         
+         if(results.size() > 3){
+            max = max-2;
+         }
+         
+         for(int k = 0; k<max; k++){
             Button button = new Button();
             button.setText(results.get(k));
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -282,8 +292,17 @@ public class SteamGUI extends Application{
       }
       
       public void displayNews(String keys){
+         VBox news = new VBox();
+         
          if(loggedIn){
-            //Favorites button will go here
+            Button fave = new Button();
+            fave.setText("Add to Favorites");
+            fave.setOnMouseClicked(new EventHandler<MouseEvent>() {
+               @Override
+               public void handle(MouseEvent event){
+                   //TODO MIKE
+               }
+            });
          }
          
          System.out.println(keys);
@@ -293,8 +312,6 @@ public class SteamGUI extends Application{
          ArrayList<String> results = AL.NewsInfo(keysplit[1]);
          
          System.out.println("Number of News Items: "+results.size());
-         
-         VBox news = new VBox();
          
          for(int r =0; r<results.size(); r++){
             WebView newsItem = new WebView();
