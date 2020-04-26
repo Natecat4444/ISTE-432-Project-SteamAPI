@@ -75,6 +75,7 @@ public class ApplicationLayer{
          
    }
    public ArrayList<String> NewsInfo(String key){
+   al.removeAll(al);
    String json="";
       try{
          URL newsUrl = new URL("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid="+key);
