@@ -285,15 +285,23 @@ public class SteamGUI extends Application{
          if(loggedIn){
             //Favorites button will go here
          }
+         
          System.out.println(keys);
          String[] keysplit = keys.split(" ");
+         
          System.out.println("AppID: "+keysplit[1]);
          ArrayList<String> results = AL.NewsInfo(keysplit[1]);
-         System.out.println("Number of News Items: "+results.size());
-         VBox news = new VBox();
-         for(int r =0; r<results.size(); r++){
          
+         System.out.println("Number of News Items: "+results.size());
+         
+         VBox news = new VBox();
+         
+         for(int r =0; r<results.size(); r++){
+            WebView newsItem = new WebView();
+            newsItem.getEngine().loadContent(results.get(r));
+            news.getChildren().add(newsItem);
          }
+         prime.setCenter(news);
       }
      
    
