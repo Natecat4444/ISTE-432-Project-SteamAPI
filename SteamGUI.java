@@ -499,6 +499,7 @@ public class SteamGUI extends Application{
          @Override
          public void handle(MouseEvent event){
             prime.setCenter(loginWindow());
+            loggedIn = false;
          }
       
       });
