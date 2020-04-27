@@ -23,6 +23,9 @@ import javafx.scene.Parent;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.scene.Group;
+import javafx.geometry.Orientation;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import java.util.ArrayList;
 
 public class SteamGUI extends Application{
@@ -174,12 +177,30 @@ public class SteamGUI extends Application{
       this.primaryStage = primaryStage;
       prime = new BorderPane();
       
+      ScrollBar scrollbar = new ScrollBar();
+      scrollbar.setOrientation(Orientation.VERTICAL);
+      
+      Group group = new Group();
+      group.getChildren().addAll(prime, scrollbar);
       prime.setPrefWidth(500);
-      prime.setPrefHeight(300);
+      prime.setPrefHeight(900);
       prime.setCenter(loginWindow());
       prime.setRight(help());
-      Scene scene = new Scene(prime);
+      Scene scene = new Scene(group);
+      
       primaryStage.setScene(scene);
+      
+      scrollbar.setLayoutX(scene.getWidth() - scene.getWidth());
+      scrollbar.setMin(0);
+      scrollbar.setMax(360);
+      scrollbar.setPrefHeight(360);
+      
+      scrollbar.valueProperty().addListener(new ChangeListener<Number>() {
+         public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val){
+               prime.setLayoutY(-new_val.doubleValue());
+            }
+         });
+      
       primaryStage.show();
    }
    
