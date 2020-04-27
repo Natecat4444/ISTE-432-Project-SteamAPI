@@ -181,18 +181,18 @@ public class SteamGUI extends Application{
       scrollbar.setOrientation(Orientation.VERTICAL);
       
       Group group = new Group();
-      group.getChildren().addAll(prime, scrollbar);
+      // group.getChildren().addAll(prime, scrollbar);
       prime.setPrefWidth(500);
-      prime.setPrefHeight(900);
+      prime.setPrefHeight(500);
       prime.setCenter(loginWindow());
       prime.setRight(help());
-      Scene scene = new Scene(group);
+      Scene scene = new Scene(prime);
       
       primaryStage.setScene(scene);
       
-      scrollbar.setLayoutX(scene.getWidth() - scene.getWidth());
+      scrollbar.setLayoutX(scene.getWidth());
       scrollbar.setMin(0);
-      scrollbar.setMax(360);
+      // scrollbar.setMax(360);
       scrollbar.setPrefHeight(360);
       
       scrollbar.valueProperty().addListener(new ChangeListener<Number>() {
@@ -201,6 +201,11 @@ public class SteamGUI extends Application{
             }
          });
       
+      prime.setLayoutX(5);
+      
+      prime.setLeft(scrollbar);
+      
+      primaryStage.setMaximized(true);
       primaryStage.show();
    }
    
@@ -339,6 +344,7 @@ public class SteamGUI extends Application{
             WebView newsItem = new WebView();
             newsItem.getEngine().loadContent(results.get(r));
             news.getChildren().add(newsItem);
+            newsItem.setMinHeight(2);
          }
          prime.setCenter(news);
       }
