@@ -362,7 +362,7 @@ public class SteamGUI extends Application{
       
       public VBox Favep2(ArrayList<String> results){
          ArrayList<Button> buttons = new ArrayList();
-         Label label = new Label("Results");
+         Label label = new Label("Favorites");
          VBox res = new VBox(label);
          System.out.println("Results: "+results.size());
          
