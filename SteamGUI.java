@@ -319,6 +319,13 @@ public class SteamGUI extends Application{
          if(results.size() >= 3){
             max = max-2;
          }
+         else if(results.size() ==1){
+            if(results.get(0).equals("No game are matched!")){
+               Label labelend = new Label("No results found");
+               res.getChildren().add(labelend);
+               return res;
+            }
+         }
          
          for(int k = 0; k<max; k++){
             Button button = new Button();
