@@ -88,10 +88,10 @@ public class dbLayer{
              // System.out.println(test);
             }//end if
             allData.add(row);
-            System.out.println("row: " + row);
+          //  System.out.println("row: " + row);
          }//end while    
-         System.out.println(allData);
-         String password1 = allData.get(1).get(0);
+      //   System.out.println(allData);
+      //   String password1 = allData.get(1).get(0);
       
       
       }catch(SQLException sqle){
@@ -160,12 +160,12 @@ public class dbLayer{
       
       try{
       String newPass = hash.createHash(pass);
-      System.out.println("hashed Password: " + newPass);
+    //  System.out.println("hashed Password: " + newPass);
       //create stmt and sql statement
       System.out.println(conn);
          Statement stmt1 = conn.createStatement();
          sql = "INSERT INTO userInfo VALUES( \"" + username+ "\",\"" + newPass+"\");";
-         System.out.println("sql: "+sql);
+      //   System.out.println("sql: "+sql);
       
          rows = stmt1.executeUpdate(sql); //inserts into the passenger table
       
@@ -207,7 +207,7 @@ public class dbLayer{
             }//end if
             allData.add(row);
          }//end while    
-         String password1 = allData.get(1).get(0);
+      //   String password1 = allData.get(1).get(0);
       
       
       }catch(SQLException sqle){
