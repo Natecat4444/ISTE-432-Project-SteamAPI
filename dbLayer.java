@@ -23,7 +23,8 @@ public class dbLayer{
          conn = DriverManager.getConnection(URI, USER, PASS);
       
       }catch(Exception e){
-      
+         e.printStackTrace();
+         return false;
       }//end trycatch
       return true;
       // returns true if the connection to the login database is succesful
@@ -135,11 +136,12 @@ public class dbLayer{
       String newPass = hash.createHash(pass);
       System.out.println("hashed Password: " + newPass);
       //create stmt and sql statement
-         stmt = conn.createStatement();
+      System.out.println(conn);
+         Statement stmt1 = conn.createStatement();
          sql = "INSERT INTO userInfo VALUES( \"" + username+ "\",\"" + newPass+"\");";
          System.out.println("sql: "+sql);
       
-         rows = stmt.executeUpdate(sql); //inserts into the passenger table
+         rows = stmt1.executeUpdate(sql); //inserts into the passenger table
       
       }catch(SQLException sqle){
          System.out.println("couldnt update with insert statement");

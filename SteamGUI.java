@@ -71,7 +71,7 @@ public class SteamGUI extends Application{
       HBox HBox2 = new HBox(label2, passIn);
       
       Button loginbtn = new Button();
-      loginbtn.setText("Regester");
+      loginbtn.setText("Register");
       loginbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -80,7 +80,8 @@ public class SteamGUI extends Application{
            //   System.out.println("user: "+user);
            //  System.out.println("Pass: "+pass);
                 //TODO MIKE
-                db.connect();
+                boolean connected = db.connect();
+                System.out.println(connected);
                 int regInt = db.register(user, pass);
                 
                 if(regInt == 1){
@@ -203,7 +204,7 @@ public class SteamGUI extends Application{
       
       prime.setLayoutX(5);
       
-      prime.setLeft(scrollbar);
+      // prime.setLeft(scrollbar);
       
       primaryStage.setMaximized(true);
       primaryStage.show();
