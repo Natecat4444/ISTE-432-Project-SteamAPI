@@ -340,7 +340,13 @@ public class SteamGUI extends Application{
          
          System.out.println("Number of News Items: "+results.size());
          
-         for(int r =0; r<results.size(); r++){
+         int max = results.size();
+         
+         if(max>18){
+            max = 18;
+         }
+         
+         for(int r =0; r<max; r++){
             WebView newsItem = new WebView();
             newsItem.getEngine().loadContent(results.get(r));
             news.getChildren().add(newsItem);

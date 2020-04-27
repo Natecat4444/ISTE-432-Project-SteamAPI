@@ -141,8 +141,7 @@ public class ApplicationLayer{
       jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
       String java_date = jdf.format(date);
       
-      al.add("News Title: "+newsTitle);
-      al.add("Date: "+java_date+"\n");
+      al.add("News Title: "+newsTitle+" Date: "+java_date+"\n");
          
    }
 
