@@ -243,6 +243,24 @@ public class SteamGUI extends Application{
    public VBox favorites(){
       VBox vboxtest = new VBox();
       
+      db.connect();
+      
+      ArrayList<ArrayList<String>> results = db.getFavorites(Username);
+      
+      ArrayList<String> ids = new ArrayList();
+      
+      for(int y =0; y<results.size(); y++){
+         for(int r= 0; r<results.get(y).size(); r++){
+            if(!ids.contains(results.get(y).get(r))){
+               ids.add(results.get(y).get(r));
+            }
+         }
+      }
+      
+      for(int p = 0; p<ids.size(); p++){
+         System.out.println(ids.get(p));
+      }
+      
       return vboxtest;
       
    }
