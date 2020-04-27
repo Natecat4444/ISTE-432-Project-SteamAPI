@@ -339,7 +339,7 @@ public class SteamGUI extends Application{
                         p++;
                      }
                      System.out.println(p);
-                     displayNews(results.get(p));
+                     displayNews(results.get(p), false);
                   
                }
             });
@@ -381,7 +381,7 @@ public class SteamGUI extends Application{
                         p++;
                      }
                      System.out.println(p);
-                     displayNews(results.get(p));
+                     displayNews(results.get(p), true);
                   
                }
             });
@@ -392,7 +392,7 @@ public class SteamGUI extends Application{
          return res;
       }
       
-      public void displayNews(String keys){
+      public void displayNews(String keys, Boolean faver){
          VBox news = new VBox();
          
          System.out.println(keys);
@@ -401,7 +401,7 @@ public class SteamGUI extends Application{
          System.out.println("AppID: "+keysplit[1]);
          ArrayList<String> results = AL.NewsInfo(keysplit[1]);
          
-         if(loggedIn){
+         if(loggedIn && (faver == false)){
             Button fave = new Button();
             fave.setText("Add to Favorites");
             fave.setOnMouseClicked(new EventHandler<MouseEvent>() {
