@@ -125,7 +125,33 @@ public class dbLayer{
       return (rows);
    
    
-   }//end register
+   }//end addfav
+   
+   public int delFavorite(String username, String appid){
+      int rows = 0;
+      String sql = new String();
+   //   String newPass = hash.createPassword(pass);
+    //  System.out.println("hashed Password: " + pass);
+      try{
+      //create stmt and sql statement
+         stmt = conn.createStatement();
+         sql = "DELETE FROM favorites WHERE username = \"" + username + "\" AND appid = \"" + appid+"\";";
+         System.out.println("sql: "+sql);
+      
+         rows = stmt.executeUpdate(sql); //inserts into the passenger table
+      
+      }catch(SQLIntegrityConstraintViolationException e){
+         System.out.println("Already in Favorites!!");
+         rows = 0;
+      }catch(Exception e){
+         e.printStackTrace();
+         
+      }//end try/catch
+      return (rows);
+   
+
+   
+   }//end delFav
    
    public int register(String username, String pass){
       int rows = 0;
