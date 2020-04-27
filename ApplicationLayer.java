@@ -132,7 +132,6 @@ public class ApplicationLayer{
    }
    private void parseNewsObject(JSONObject news) 
    {
-      String contents = (String) news.get("contents");
       String newsTitle = (String) news.get("title");
       Long unix_seconds = (Long) news.get("date");
       
@@ -142,13 +141,7 @@ public class ApplicationLayer{
       jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
       String java_date = jdf.format(date);
       
-      
-      
-      
-      al.add("News Title: "+newsTitle);
-      al.add("Date: "+java_date+"\n");
-      al.add(contents);
-      
+      al.add("News Title: "+newsTitle+" Date: "+java_date+"\n");
          
    }
 
