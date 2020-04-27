@@ -251,17 +251,19 @@ public class SteamGUI extends Application{
       
       for(int y =0; y<results.size(); y++){
          for(int r= 0; r<results.get(y).size(); r++){
-            if(!ids.contains(results.get(y).get(r))){
                ids.add(results.get(y).get(r));
-            }
+            
          }
       }
       
-      for(int p = 0; p<ids.size(); p++){
-         System.out.println(ids.get(p));
-      }
+      ArrayList<String> labels = new ArrayList();
       
-      return vboxtest;
+      for(int p = 0; p<ids.size(); p++){
+        labels.add(getFavebtnLabel(ids.get(p)));
+      }
+      System.out.println("End Favorites");
+      
+      return Favep2(labels);
       
    }
    
@@ -341,6 +343,48 @@ public class SteamGUI extends Application{
          return res;
       }
       
+      public String getFavebtnLabel(String id){
+         String result = BL.searchFromKey(id);
+         String[] framents = result.split("News");
+         String p1 = framents[0];
+         result = p1.substring(0, framents[0].length()-2);
+         System.out.println(result);
+         return result;
+      }
+      
+      public VBox Favep2(ArrayList<String> results){
+         ArrayList<Button> buttons = new ArrayList();
+         Label label = new Label("Results");
+         VBox res = new VBox(label);
+         System.out.println("Results: "+results.size());
+         
+         int max = results.size();
+         
+         
+         for(int k = 0; k<max; k++){
+            System.out.println(results.get(k));
+            Button button = new Button();
+            button.setText(results.get(k));
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+               @Override
+               public void handle(MouseEvent event){
+                     Button clicked = (Button)event.getSource();
+                     int p = 0;
+                     while(!buttons.get(p).equals(clicked)){
+                        p++;
+                     }
+                     System.out.println(p);
+                     displayNews(results.get(p));
+                  
+               }
+            });
+            buttons.add(button);
+            res.getChildren().add(button);
+         }
+         System.out.println("Before return"+res.getChildren());
+         return res;
+      }
+      
       public void displayNews(String keys){
          VBox news = new VBox();
          
@@ -390,6 +434,7 @@ public class SteamGUI extends Application{
       tabs = new TabPane();
       
       tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+      prime.setCenter(null);
       
       Tab Favorites = new Tab("Favorites", favorites());
       Tab Search = new Tab("Search", Search());
@@ -410,12 +455,11 @@ public class SteamGUI extends Application{
       HBox Hbox = new HBox(tabs, logout);
       
       prime.setTop(Hbox);
-      prime.setCenter(favorites());
    }
    
    
    public void setUpMainGuest(){
-      prime.setCenter(Search());
+      prime.setCenter(null);
       tabs = new TabPane();
       
       tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
