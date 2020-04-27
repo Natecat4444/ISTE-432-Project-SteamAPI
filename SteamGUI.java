@@ -447,7 +447,7 @@ public class SteamGUI extends Application{
             news.getChildren().add(unfave);
          }
          
-         
+         ArrayList<Button> newsbuttons = new ArrayList();
          
          System.out.println("Number of News Items: "+results.size());
          
@@ -458,10 +458,24 @@ public class SteamGUI extends Application{
          }
          
          for(int r =0; r<max; r++){
-            WebView newsItem = new WebView();
-            newsItem.getEngine().loadContent(results.get(r));
-            news.getChildren().add(newsItem);
-            newsItem.setMinHeight(2);
+            Button button = new Button();
+            button.setText(results.get(r));
+            
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+               @Override
+               public void handle(MouseEvent event){
+                   Button clicked = (Button)event.getSource();
+                   int p = 0;
+                   while(!newsbuttons.get(p).equals(clicked)){
+                        p++;
+                   }
+                   WebView Art = article(keysplit[1], p);
+                   prime.setCenter(Art);
+               }
+            });
+            newsbuttons.add(button);
+            news.getChildren().add(button);
+            
          }
          prime.setCenter(news);
       }
@@ -554,5 +568,12 @@ public class SteamGUI extends Application{
          });
    favebuttons.add(button);
    faveres.getChildren().add(button);
+   }
+   
+   public WebView article(String key, int loc){
+      ArrayList<String> Articles = AL.GetContent(key);
+      WebView newsItem = new WebView();
+      newsItem.getEngine().loadContent(Articles.get(loc));
+      return newsItem;
    }
 }

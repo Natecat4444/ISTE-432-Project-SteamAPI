@@ -14,6 +14,7 @@ public class ApplicationLayer{
 
    private HashMap<Long, String> hmap = new HashMap<Long, String>();
    private ArrayList<String> al = new ArrayList<String>();
+   private ArrayList<String> conetent_list = new ArrayList<String>();
    
    public ApplicationLayer(){
    }
@@ -141,7 +142,58 @@ public class ApplicationLayer{
       jdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
       String java_date = jdf.format(date);
       
+      
+      
+      
       al.add("News Title: "+newsTitle+" Date: "+java_date+"\n");
+      
+         
+   }
+   
+   public ArrayList<String> GetContent(String key){
+   
+      String jsonObj ="";
+      conetent_list.removeAll(conetent_list);
+      try{
+         URL newsUrl = new URL("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid="+key);
+          BufferedReader read = new BufferedReader(
+            new InputStreamReader(newsUrl.openStream()));
+         String i;
+         while ((i = read.readLine()) != null){
+            jsonObj += i;
+         }
+       }catch(Exception e){
+         System.out.println("Eorror on getting the news informations!");
+       } 
+   
+      JSONParser jsonParser = new JSONParser();
+         
+      try 
+      {
+            //Read JSON String
+         JSONObject obj = (JSONObject) jsonParser.parse(jsonObj);
+         JSONObject app = (JSONObject) obj.get("appnews");
+         JSONArray newslist = (JSONArray) app.get("newsitems");
+          
+            //Iterate over app array
+        newslist.forEach( news -> getContent( (JSONObject) news ) );
+        
+        
+        return conetent_list;
+      
+      } catch (ParseException e) {
+         e.printStackTrace();
+      }
+              return conetent_list;
+
+   }
+   private void getContent(JSONObject news) 
+   {
+      
+      String content = (String) news.get("contents");
+      conetent_list.add(content);
+      
+      
          
    }
 
