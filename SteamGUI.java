@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.Tab;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollBar;
@@ -93,6 +94,7 @@ public class SteamGUI extends Application{
                   System.out.println("Couldn't register");
                 }//end ifelse
                 prime.setCenter(loginWindow());
+                db.close();
             }
         });
         
@@ -135,11 +137,13 @@ public class SteamGUI extends Application{
                 if(loginSuccess(Username, Password)){
                 
                   loggedIn = true;
+                  db.close();
                   setUpMain();
                 }
                 else{
                   Label errortext = new Label("Incorrect Username/Password");
                   prime.setTop(errortext);
+                  db.close();
                 }
             }
         });
@@ -322,22 +326,29 @@ public class SteamGUI extends Application{
       public void displayNews(String keys){
          VBox news = new VBox();
          
+         System.out.println(keys);
+         String[] keysplit = keys.split(" ");
+         
+         System.out.println("AppID: "+keysplit[1]);
+         ArrayList<String> results = AL.NewsInfo(keysplit[1]);
+         
          if(loggedIn){
             Button fave = new Button();
             fave.setText("Add to Favorites");
             fave.setOnMouseClicked(new EventHandler<MouseEvent>() {
                @Override
                public void handle(MouseEvent event){
-                   //TODO MIKE
+                   db.connect();
+                   db.addFavorite(Username, keysplit[1]);
+                   db.close();
+                   Alert got = new Alert(Alert.AlertType.INFORMATION, String.format("Favorite Added"));
+                   got.show();
                }
             });
+            news.getChildren().add(fave);
          }
          
-         System.out.println(keys);
-         String[] keysplit = keys.split(" ");
          
-         System.out.println("AppID: "+keysplit[1]);
-         ArrayList<String> results = AL.NewsInfo(keysplit[1]);
          
          System.out.println("Number of News Items: "+results.size());
          
