@@ -41,6 +41,9 @@ public class SteamGUI extends Application{
    private static TabPane tabs;
    private static dbLayer db;
    private static Boolean loggedIn;
+   private static VBox faveres;
+   private static ArrayList<String> labels;
+   private static ArrayList<Button> favebuttons;
    
    private String setUsername(String Username){
       this.Username = Username;
@@ -257,7 +260,7 @@ public class SteamGUI extends Application{
          }
       }
       
-      ArrayList<String> labels = new ArrayList();
+      labels = new ArrayList();
       
       for(int p = 0; p<ids.size(); p++){
         labels.add(getFavebtnLabel(ids.get(p)));
@@ -361,9 +364,19 @@ public class SteamGUI extends Application{
       }
       
       public VBox Favep2(ArrayList<String> results){
-         ArrayList<Button> buttons = new ArrayList();
+         favebuttons = new ArrayList();
+         
+         Button refresh = new Button();
+         refresh.setText("Refresh");
+         refresh.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+               favorites();
+            }
+         });
          Label label = new Label("Favorites");
-         VBox res = new VBox(label);
+         faveres = new VBox(label);
+         // faveres.getChildren().add(refresh);
          System.out.println("Results: "+results.size());
          
          int max = results.size();
@@ -378,7 +391,7 @@ public class SteamGUI extends Application{
                public void handle(MouseEvent event){
                      Button clicked = (Button)event.getSource();
                      int p = 0;
-                     while(!buttons.get(p).equals(clicked)){
+                     while(!favebuttons.get(p).equals(clicked)){
                         p++;
                      }
                      System.out.println(p);
@@ -386,11 +399,10 @@ public class SteamGUI extends Application{
                   
                }
             });
-            buttons.add(button);
-            res.getChildren().add(button);
+            favebuttons.add(button);
+            faveres.getChildren().add(button);
          }
-         System.out.println("Before return"+res.getChildren());
-         return res;
+         return faveres;
       }
       
       public void displayNews(String keys, Boolean faver){
@@ -412,10 +424,27 @@ public class SteamGUI extends Application{
                    db.addFavorite(Username, keysplit[1]);
                    db.close();
                    Alert got = new Alert(Alert.AlertType.INFORMATION, String.format("Favorite Added"));
+                   addFav(keys);
                    got.show();
                }
             });
             news.getChildren().add(fave);
+         }
+         else if(loggedIn && faver){
+            Button unfave = new Button();
+            unfave.setText("Remove from Favorites");
+            unfave.setOnMouseClicked(new EventHandler<MouseEvent>() {
+               @Override
+               public void handle(MouseEvent event){
+                   db.connect();
+                   db.delFavorite(Username, keysplit[1]);
+                   db.close();
+                   removeFav(keys);
+                   Alert got = new Alert(Alert.AlertType.INFORMATION, String.format("Favorite Removed"));
+                   got.show();
+               }
+            });
+            news.getChildren().add(unfave);
          }
          
          
@@ -494,5 +523,36 @@ public class SteamGUI extends Application{
    
    public static void main(String[] args){
       Application.launch();
+   }
+   
+   public void removeFav(String key){
+      for(int k = 0; k<labels.size(); k++){
+         if(labels.get(k).equals(key)){
+         System.out.println(favebuttons.size());
+            System.out.println(favebuttons.get(k));
+            faveres.getChildren().remove(favebuttons.get(k));
+            return;
+         }
+      }
+   }
+   
+   public void addFav(String keys){
+      Button button = new Button();
+      button.setText(keys);
+      button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+         @Override
+         public void handle(MouseEvent event){
+            Button clicked = (Button)event.getSource();
+            int p = 0;
+            while(!favebuttons.get(p).equals(clicked)){
+               p++;
+            }
+            System.out.println(p);
+            displayNews(keys, true);
+                  
+         }
+         });
+   favebuttons.add(button);
+   faveres.getChildren().add(button);
    }
 }
