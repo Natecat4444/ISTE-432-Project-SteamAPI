@@ -242,6 +242,7 @@ public class SteamGUI extends Application{
    
    public VBox favorites(){
       VBox vboxtest = new VBox();
+      prime.setCenter(null);
       
       db.connect();
       
@@ -320,7 +321,7 @@ public class SteamGUI extends Application{
             max = max-2;
          }
          else if(results.size() ==1){
-            if(results.get(0).equals("No game are matched!")){
+            if(results.get(0).equals("No game are matched!") || results.get(0).equals("Please enter the Name!") || results.get(0).equals("Please enter AppI") || results.get(0).equals("AppID inval")){
                Label labelend = new Label("No results found");
                res.getChildren().add(labelend);
                return res;
